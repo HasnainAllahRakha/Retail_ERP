@@ -6,6 +6,7 @@ namespace Erp.Models.ApplicationUsers
 {
     //**ApplicationUser Relationship Explanation**//
     //*ApplicationUser(1) --> (many)SalesOrder(One user can have many sales order)*//
+    //*ApplicationUser(1) --> (many)Notification(One user can have many notifications)*//
 
     public class ApplicationUser : IdentityUser
     {
