@@ -17,7 +17,7 @@ namespace Erp.Models.ApplicationUsers
         public DateTime? OtpExpiryTime { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = true; // To disable user account and not delete them
 
         public string? PasswordResetToken { get; set; }  // For password reset link tracking
         public DateTime? PasswordResetExpiry { get; set; }
