@@ -18,7 +18,7 @@ namespace Erp.DTOs.Auth.Register
         [Required, MinLength(6)]
         public string Password { get; set; } = default!;
 
-        public string? Role { get; set; } = "Candidate"; // default role
+        public string? Role { get; set; } 
     }
 
 
