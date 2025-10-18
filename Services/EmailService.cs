@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
-namespace AiResume.Services
+namespace Erp.Services
 {
     public class EmailSettings
     {

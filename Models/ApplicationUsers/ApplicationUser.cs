@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using Erp.Models.Sales;
+using Erp.Models.Notify;
+
 
 namespace Erp.Models.ApplicationUsers
 {
@@ -22,5 +24,7 @@ namespace Erp.Models.ApplicationUsers
 
         //Relationships(Navigational Properties)
         public ICollection<SalesOrder> SalesOrders { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
+     
     }
 }
