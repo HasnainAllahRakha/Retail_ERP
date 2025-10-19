@@ -8,6 +8,7 @@ using System.Text;
 using Erp.Data;
 using Erp.Models.ApplicationUsers;
 using Erp.Services;
+using Erp.Hubs;
 // using Erp.Schedulers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -98,10 +99,14 @@ app.UseCors("AllowReactApp");
 
 app.UseRouting();
 
-app.UseHangfireDashboard("/hangfire");
-
-app.UseAuthentication();  // must be before UseAuthorization
+app.UseAuthentication();
 app.UseAuthorization();
+
+// ------------------ Endpoints ------------------
+app.UseHangfireDashboard("/hangfire");
+app.MapHub<NotificationHub>("/notificationHub");
+app.MapControllers();
+
 
 // ------------------ REGISTER HANGFIRE JOBS ------------------
 // using (var scope = app.Services.CreateScope())
