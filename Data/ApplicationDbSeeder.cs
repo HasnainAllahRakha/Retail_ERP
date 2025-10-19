@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Erp.Data;
+using Erp.Data.Enum;
 using Erp.Models.ApplicationUsers;
 using Erp.Models.Suppliers;
 using Erp.Models.Products;
@@ -16,15 +17,12 @@ public static class ApplicationDbSeeder
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         #region Seed Roles
-        string[] roles = { "Admin", "Staff" };
-        foreach (var role in roles)
+        foreach (var roleName in Enum.GetNames(typeof(AppRoles)))
         {
-            if (!await roleManager.RoleExistsAsync(role))
-            {
-                await roleManager.CreateAsync(new IdentityRole(role));
-                Console.WriteLine($"✅ Created Role: {role}");
-            }
+            if (!await roleManager.RoleExistsAsync(roleName))
+                await roleManager.CreateAsync(new IdentityRole(roleName));
         }
+
         #endregion
 
         #region Seed Default Admin
