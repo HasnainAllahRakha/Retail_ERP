@@ -29,11 +29,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// ------------------ EMAIL + CUSTOM SERVICES + Hangfire ------------------
+// ------------------ EMAIL + CUSTOM SERVICES + Hangfire +SignalIr------------------
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddHangfireServer();
+builder.Services.AddSignalR();
 // builder.Services.AddScoped<AccountCleanupService>();
 
 // ------------------ JWT AUTH ------------------
