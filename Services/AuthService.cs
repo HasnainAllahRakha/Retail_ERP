@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.IdentityModel.Tokens.Jwt;
+using Erp.Data.Enum;
 
 
 namespace Erp.Services
@@ -103,10 +104,12 @@ namespace Erp.Services
                     return "Account exists but not verified. Please login to verify.";
             }
 
-            // Validate role
-            var roleName = string.IsNullOrWhiteSpace(request.Role) ? UserRole.Candidate.ToString() : request.Role;
-            if (!Enum.TryParse<UserRole>(roleName, true, out var roleEnum))
-                return "Invalid role. Must be Candidate or Recruiter.";
+            // ✅ Default role fallback
+            var roleName = string.IsNullOrWhiteSpace(request.Role) ? AppRoles.Staff.ToString() : request.Role;
+
+            // ✅ Validate against enum (case-insensitive)
+            if (!Enum.TryParse(typeof(AppRoles), roleName, true, out var parsedRole))
+                return "Invalid role. Must be one of the defined system roles.";
 
             var user = new ApplicationUser
             {
@@ -121,17 +124,15 @@ namespace Erp.Services
             if (!result.Succeeded)
                 return string.Join(", ", result.Errors.Select(e => e.Description));
 
-            // Ensure role exists
-            if (!await _roleManager.RoleExistsAsync(roleEnum.ToString()))
-                await _roleManager.CreateAsync(new IdentityRole(roleEnum.ToString()));
-
-            await _userManager.AddToRoleAsync(user, roleEnum.ToString());
+            // ✅ No need to check DB — seeder already ensured roles exist
+            await _userManager.AddToRoleAsync(user, parsedRole.ToString());
 
             user.EmailConfirmed = true;
             await _userManager.UpdateAsync(user);
 
             return "User registered successfully.";
         }
+
         #endregion
 
         #region Login
