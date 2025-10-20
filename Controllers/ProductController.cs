@@ -105,8 +105,10 @@ namespace Erp.API.Controllers
 
             return Ok(dto);
         }
+        #endregion
 
-        // ✅ POST: api/products
+        #region Add Products
+        // POST: api/products
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] ProductCreateDto dto)
@@ -189,6 +191,7 @@ namespace Erp.API.Controllers
 
             return Ok("Product deleted successfully.");
         }
+        #endregion
     }
-    #endregion
+
 }
