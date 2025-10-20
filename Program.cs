@@ -104,6 +104,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // ------------------ Endpoints ------------------
+app.MapGet("/", () => "Hello, you are connected to the server!");
 app.UseHangfireDashboard("/hangfire");
 app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();

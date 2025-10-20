@@ -54,8 +54,24 @@ public static class ApplicationDbSeeder
         if (!await dbContext.Suppliers.AnyAsync())
         {
             dbContext.Suppliers.AddRange(
-                new Supplier { Name = "TechWorld Distributors", Email = "sales@techworld.com", Phone = "555-1111", Address = "New York, USA" },
-                new Supplier { Name = "Global Components", Email = "info@globalcomponents.com", Phone = "555-2222", Address = "Berlin, Germany" }
+               new Supplier
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "TechWorld Distributors",
+                   ContactPerson = "John Doe",
+                   Email = "sales@techworld.com",
+                   Phone = "555-1111",
+                   Address = "New York, USA"
+               },
+                new Supplier
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Global Components",
+                    ContactPerson = "Anna Schmidt",
+                    Email = "info@globalcomponents.com",
+                    Phone = "555-2222",
+                    Address = "Berlin, Germany"
+                }
             );
             await dbContext.SaveChangesAsync();
             Console.WriteLine("✅ Seeded sample suppliers.");
@@ -66,8 +82,28 @@ public static class ApplicationDbSeeder
         if (!await dbContext.Products.AnyAsync())
         {
             dbContext.Products.AddRange(
-                new Product { Name = "Wireless Mouse", SKU = "PRD-001", Price = 25, StockQuantity = 100, ReorderLevel = 10 },
-                new Product { Name = "Mechanical Keyboard", SKU = "PRD-002", Price = 70, StockQuantity = 50, ReorderLevel = 5 }
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Wireless Mouse",
+                    SKU = "PRD-001",
+                    Description = "Ergonomic wireless mouse with adjustable DPI",
+                    Price = 25,
+                    StockQuantity = 100,
+                    ReorderLevel = 10,
+                    IsActive = true
+                },
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Mechanical Keyboard",
+                    SKU = "PRD-002",
+                    Description = "RGB backlit mechanical keyboard with blue switches",
+                    Price = 70,
+                    StockQuantity = 50,
+                    ReorderLevel = 5,
+                    IsActive = true
+                }
             );
             await dbContext.SaveChangesAsync();
             Console.WriteLine("✅ Seeded sample products.");
