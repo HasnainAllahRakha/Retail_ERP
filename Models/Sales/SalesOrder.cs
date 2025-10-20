@@ -12,16 +12,14 @@ namespace Erp.Models.Sales
     {
         public Guid Id { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
-
-        public Guid CreatedById { get; set; }
-
         //Enums
         public SalesOrderStatus Status { get; set; } = SalesOrderStatus.Pending;
 
         //Relationships(foreign key)
-        public ApplicationUser CreatedBy { get; set; }
+        public string CreatedById { get; set; }
 
         //Relationships(Navigational Properties)
         public ICollection<SalesOrderItem> Items { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
     }
 }
