@@ -22,12 +22,39 @@ namespace Erp.API.Controllers
             _hubContext = hubContext;
         }
 
-        // ✅ GET: api/products
+
+        #region Get Products
+        //      GET: api/products?pageNumber=1&pageSize=10
+        //          api/products?search=keyboard
+        //          api/products?search=12345&pageNumber=2
         [HttpGet]
         [Authorize(Roles = "Admin,Staff")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(string? search = null, int pageNumber = 1, int pageSize = 10)
         {
-            var products = await _context.Products
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            // Start with base query
+            var query = _context.Products.AsQueryable();
+
+            // Apply search filter if provided
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.ToLower();
+                query = query.Where(p =>
+                    p.Name.ToLower().Contains(search) ||
+                    p.SKU.ToLower().Contains(search));
+            }
+
+            // Count after filtering
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+            // Apply pagination
+            var products = await query
+                .OrderBy(p => p.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(p => new ProductReadDto
                 {
                     Id = p.Id,
@@ -40,9 +67,22 @@ namespace Erp.API.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(products);
-        }
+            var result = new
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords,
+                SearchTerm = search,
+                Data = products
+            };
 
+            return Ok(result);
+        }
+        #endregion
+
+
+        #region Get Products By Id
         // ✅ GET: api/products/{id}
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Staff")]
@@ -98,8 +138,10 @@ namespace Erp.API.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
+        #endregion
 
-        // ✅ PUT: api/products/{id}
+        #region Update Products
+        // PUT: api/products/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ProductUpdateDto dto)
@@ -127,8 +169,10 @@ namespace Erp.API.Controllers
 
             return Ok("Product updated successfully.");
         }
+        #endregion
 
-        // ✅ DELETE: api/products/{id}
+        #region Delete Product
+        //  DELETE: api/products/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
@@ -146,4 +190,5 @@ namespace Erp.API.Controllers
             return Ok("Product deleted successfully.");
         }
     }
+    #endregion
 }
