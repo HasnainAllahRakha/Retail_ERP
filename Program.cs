@@ -9,7 +9,7 @@ using Erp.Data;
 using Erp.Models.ApplicationUsers;
 using Erp.Services;
 using Erp.Hubs;
-// using Erp.Schedulers;
+// using Erp.Schedulers; scheduling jobs
 
 var builder = WebApplication.CreateBuilder(args);
 
