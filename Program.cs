@@ -88,7 +88,6 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 // ------------------ Manual DI Registration ------------------
-
 using (var scope = app.Services.CreateScope())
 {
     await ApplicationDbSeeder.SeedAsync(scope.ServiceProvider);
