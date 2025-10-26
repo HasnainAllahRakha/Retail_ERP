@@ -57,7 +57,7 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 
-    // ✅ Read JWT from cookies
+    // Read JWT from cookies
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = ctx =>
@@ -103,7 +103,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // ------------------ Endpoints ------------------
-app.MapGet("/", () => "Hello, you are connected to the server!");
+app.MapGet("/", () => "Hello, you are connected to the server and app is deployed on azure!");
 app.UseHangfireDashboard("/hangfire");
 app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
